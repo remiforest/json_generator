@@ -15,8 +15,8 @@ values will be generated based on the schema value.
 <hr>
 <h3>Examples</h3> 
 
-{"_id":"OID","name":"LAST","card":"nnnn-nnnn-nnnn-nnnn"}
 
+{"_id":"OID","name":"LAST","card":"nnnn-nnnn-nnnn-nnnn"}
 {"name":{"FILE":"customers.json:last_name"},"new_id":"OID","product_id":"nncc-CCCC"}
 
 
@@ -30,4 +30,5 @@ LAST : last name (english)
 FIRST : first name (english)
 
 {"FILE":"file_name:field_name"} : references a filed in an external file.
+
 
