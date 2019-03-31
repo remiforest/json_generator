@@ -22,12 +22,12 @@ values will be generated based on the schema value.
 
 <hr>
 <h3>Value types</h3>
-OID : mongodb type UID
-n : number 0-9
-c : lower case a-z
-C : upper case A-Z
-LAST : last name (english)
-FIRST : first name (english)
+OID : mongodb type UID<p>
+n : number 0-9<p>
+c : lower case a-z<p>
+C : upper case A-Z<p>
+LAST : last name (english)<p>
+FIRST : first name (english)<p>
 
 {"FILE":"file_name:field_name"} : references a filed in an external file.
 
