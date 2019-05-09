@@ -1,1 +1,1 @@
-{"cust_id":{"custom":"nnncccnnnccc","unique":true},"last_name":"last_name","first_name":"first_name"}
+{"cust_id":{"format":"nnncccnnnccc","unique":true},"last_name":"last_name","first_name":"first_name"}

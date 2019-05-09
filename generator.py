@@ -118,7 +118,7 @@ def generate_field(field_name, field_format):
         if field_format in source_data:
             new_value = get_value(field_format)
     if isinstance(field_format,dict):
-        if "custom" in field_format:
+        if "format" in field_format:
             if "unique" in field_format:
                 unique = field_format["unique"]
                 if not field_name in given_values:
@@ -128,7 +128,7 @@ def generate_field(field_name, field_format):
             number_of_try = 0
             while True:
                 number_of_try += 1
-                new_value = custom_string(field_format["custom"])
+                new_value = custom_string(field_format["format"])
                 if unique:
                     # we test if the value has already been given
                     already_given = bloom_filter.query(new_value)
