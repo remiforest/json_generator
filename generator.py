@@ -16,6 +16,8 @@ import json
 import csv
 import sys
 
+from bloom import Bloom
+
 
 from argparse import ArgumentParser
 
@@ -34,6 +36,11 @@ parser.add_argument(
     help='output format, default : json'
 )
 
+
+args = parser.parse_args()
+number_of_records = args.number
+
+bloom_filter = Bloom(number_of_records,0.0001,5) # n , fp , k
 
 
 def create_folder_if_doesnt_exist(dirName):
@@ -57,10 +64,9 @@ source_data = {}
 
 def load_source_data(source_name):
     global source_data
-    print(source_name)
     source_data[source_name] = [record[source_name] for record in json.load(open(source_folder + source_name + ".json"))]
 
-for source_name in ["email","first_name","last_name","country","card_number","card_vendor"]:
+for source_name in ["first_name","last_name"]: # ,"email","country","card_number","card_vendor"]:
     load_source_data(source_name)
 
 
@@ -104,7 +110,7 @@ MAX_RETRY = 1000 # max number of retry to generate an unique value
 
 def generate_field(field_name, field_format):
     """ generate a value based on the schema definition """
-
+    global bloom_filter
     global given_values
 
     # Check if the field definition is a base type or a dictionary
@@ -115,6 +121,8 @@ def generate_field(field_name, field_format):
         if "custom" in field_format:
             if "unique" in field_format:
                 unique = field_format["unique"]
+                if not field_name in given_values:
+                    given_values[field_name] = []
             else:
                 unique = False
             number_of_try = 0
@@ -122,9 +130,15 @@ def generate_field(field_name, field_format):
                 number_of_try += 1
                 new_value = custom_string(field_format["custom"])
                 if unique:
-                    if not field_name in given_values:
-                        given_values[field_name] = []
-                    if not new_value in given_values[field_name]:
+                    # we test if the value has already been given
+                    already_given = bloom_filter.query(new_value)
+                    bloom_filter.add(new_value)
+                    if already_given:
+                        # if may exist, so we test the value
+                        if not new_value in given_values[field_name]:
+                            given_values[field_name].append(new_value)
+                            break
+                    else:
                         given_values[field_name].append(new_value)
                         break
                 else:
@@ -163,5 +177,10 @@ if __name__ == '__main__':
     target_file = args.outfile
     schema = json.load(open(args.schema))
     file_format = args.format
+    start_time = time.time()
     main(number_of_records,target_file,schema,file_format)
+    end_time = time.time()
+
+    print("Generated {} documents in {} seconds".format(number_of_records,int(end_time - start_time)))
+
 
