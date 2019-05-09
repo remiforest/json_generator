@@ -18,8 +18,8 @@ values are either :
 <hr>
 <h3>Examples</h3> 
 
-{"first":"first_name","last":"last_name","email":"email"}
-{"name":"last_name","cust_id":{"format":"cccc-nnnnnnnn","unique":true}}
+{"first":"first_name","last":"last_name","email":"email"}<p>
+{"name":"last_name","cust_id":{"format":"cccc-nnnnnnnn","unique":true}}<p>
 
 
 <hr>
